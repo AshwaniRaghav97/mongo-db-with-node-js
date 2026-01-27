@@ -17,4 +17,4 @@ app.get('/',async (req,res)=>{
     res.render('student',{result});
 })
 
-app.listen(3200);
+app.listen(3000);
