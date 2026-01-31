@@ -1,6 +1,7 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 const app = express();
+app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
 
 const dbName = "school";
@@ -15,10 +16,22 @@ client.connect().then((connection)=>{
         res.send(stu);
     })
 
-    app.get("/ui",async(req,res)=>{
+    app.get("/",async(req,res)=>{
         const collection = db.collection('student');
         const student = await collection.find().toArray();
         res.render('student',{student});
+    })
+
+    app.get("/add",(req,res)=>{
+        res.render('form');
+    })
+
+    app.post("/addstudent",async(req,res)=>{
+        // console.log(req.body);
+        const collection = db.collection('student');
+        const result = await collection.insertOne(req.body);
+        console.log(result);
+        res.send("data saved");
     })
 })
 
