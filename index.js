@@ -1,5 +1,5 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient,ObjectId } from 'mongodb';
 const app = express();
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -45,6 +45,31 @@ client.connect().then((connection)=>{
         const result = await collection.insertOne(req.body);
         res.send({"message":result,"operation":"success" ,success:true});
     });
+    app.delete("/del/:id",async(req,res)=>{
+        console.log(req.params.id);
+        const collection = db.collection('student');
+        const result = await collection.deleteOne({_id:new ObjectId(req.params.id)});
+        if(result){
+            res.send({message:"deleted successfully",success:true});
+        }
+        else{
+            res.send({message:"deletion failed",success:false});
+        }
+        
+    })
+
+    app.get("/del/:id",async(req,res)=>{
+        console.log(req.params.id);
+        const collection = db.collection('student');
+        const result = await collection.deleteOne({_id:new ObjectId(req.params.id)});
+        if(result){
+            res.send(`<h1>deleted successfully</h1><a href="/">Go Back</a>`);
+        }
+        else{
+            res.send(`<h1>Not deleted</h1>`);
+        }
+        
+    })
 })
 
 
