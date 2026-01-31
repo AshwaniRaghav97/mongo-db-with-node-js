@@ -2,6 +2,7 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 const app = express();
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.set('view engine','ejs');
 
 const dbName = "school";
@@ -33,6 +34,17 @@ client.connect().then((connection)=>{
         console.log(result);
         res.send("data saved");
     })
+    app.post("/add-student-api",async(req,res)=>{
+        console.log(req.body);
+        const {name,age,email} = req.body;
+        if(!name || !age || !email){
+            res.send({"message":"invalid data",success:false});
+            return false;
+        }
+        const collection = db.collection('student');
+        const result = await collection.insertOne(req.body);
+        res.send({"message":result,"operation":"success" ,success:true});
+    });
 })
 
 
