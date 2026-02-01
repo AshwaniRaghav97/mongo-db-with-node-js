@@ -70,6 +70,28 @@ client.connect().then((connection)=>{
         }
         
     })
+
+    app.get("/update/:id",async(req,res)=>{
+        const id = req.params.id;
+        console.log(id);
+        const collection = db.collection('student');
+        const result = await collection.findOne({_id:new ObjectId(req.params.id)});
+        res.render('updates',{result});
+        
+    })
+
+    app.get("/update-s/:id",async(req,res)=>{
+        const id = req.params.id;
+        console.log(id);
+        const collection = db.collection('student');
+        const result = await collection.findOne({_id:new ObjectId(req.params.id)});
+        res.send({
+            message:"data fetched successfully",
+            result:result,
+            success:true
+        });
+        
+    })
 })
 
 
