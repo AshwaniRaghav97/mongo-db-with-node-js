@@ -11,7 +11,6 @@ async function dbconnection(){
   console.log(result);
 }
 dbconnection();
-// const express = require('express');
 
     
     
